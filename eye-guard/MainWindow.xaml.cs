@@ -30,6 +30,10 @@ namespace eye_guard
             InitializeComponents();
             InitializeEventHandlers();
             AutoStartTimer();
+            
+            // 默认隐藏主窗口，仅在托盘运行
+            this.Visibility = Visibility.Hidden;
+            this.ShowInTaskbar = false;
         }
         
         private void InitializeComponents()
@@ -78,15 +82,17 @@ namespace eye_guard
             // 托盘图标事件
             _trayIcon.ShowMainWindow += (sender, e) => ShowWindow();
             _trayIcon.ExitApplication += (sender, e) => System.Windows.Application.Current.Shutdown();
-            _trayIcon.StartTimer += (sender, e) =>
-            {
-                _timerManager.Start();
-                ShowMessage("已开始计时");
-            };
             _trayIcon.PauseTimer += (sender, e) =>
             {
-                _timerManager.Pause();
-                ShowMessage("已暂停计时");
+                _timerManager.AddTime(1); // 推迟1分钟
+                ShowMessage("已推迟休息1分钟");
+            };
+            _trayIcon.ImmediateRest += (sender, e) =>
+            {
+                // 立即触发黑屏
+                _screenController.StartBlackout();
+                // 重置计时器
+                _timerManager.Reset();
             };
         }
         
