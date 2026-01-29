@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eye-guard", "eye-guard\eye-guard.csproj", "{0B52B576-42A0-48E5-9211-71F5A05E5F23}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0B52B576-42A0-48E5-9211-71F5A05E5F23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B52B576-42A0-48E5-9211-71F5A05E5F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B52B576-42A0-48E5-9211-71F5A05E5F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B52B576-42A0-48E5-9211-71F5A05E5F23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6CD1ED57-6964-4167-BAEE-041565FC6DF7}
+	EndGlobalSection
+EndGlobal

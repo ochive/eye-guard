@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>eye_guard</RootNamespace>
+    <Nullable>enable</Nullable>
+	<!--自动为常用命名空间添加全局using-->
+	<ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+	<!--这个项目同时支持WPF和Windows Forms.可能用于显示系统托盘图标（NotifyIcon）等WinForms特有功能-->
+	<UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Vanara.PInvoke.User32" Version="5.0.0" />
+  </ItemGroup>
+
+</Project>
