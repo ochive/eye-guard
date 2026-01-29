@@ -8,7 +8,7 @@ namespace eye_guard.Core
         private System.Timers.Timer _timer;
         private int _remainingMinutes;
         private int _remainingSeconds;
-        private const int INTERVAL_MINUTES = 1;
+        private const int INTERVAL_MINUTES = 30;
         private const int INTERVAL_SECONDS = INTERVAL_MINUTES * 60;
         
         public event EventHandler TimerElapsed;
@@ -48,6 +48,12 @@ namespace eye_guard.Core
             Pause();
             _remainingMinutes = INTERVAL_MINUTES;
             _remainingSeconds = 0;
+        }
+        
+        public void AddTime(int minutes)
+        {
+            _remainingMinutes += minutes;
+            TimeUpdated?.Invoke(this, EventArgs.Empty);
         }
         
         private void OnTimerElapsed(object sender, ElapsedEventArgs e)

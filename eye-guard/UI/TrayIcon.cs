@@ -10,8 +10,8 @@ namespace eye_guard.UI
         
         public event EventHandler ShowMainWindow;
         public event EventHandler ExitApplication;
-        public event EventHandler StartTimer;
         public event EventHandler PauseTimer;
+        public event EventHandler ImmediateRest;
         
         public TrayIcon()
         {
@@ -44,11 +44,11 @@ namespace eye_guard.UI
             
             _contextMenu.Items.Add(new ToolStripSeparator());
             
-            var startItem = _contextMenu.Items.Add("开始计时");
-            startItem.Click += (sender, e) => StartTimer?.Invoke(this, EventArgs.Empty);
-            
-            var pauseItem = _contextMenu.Items.Add("暂停计时");
+            var pauseItem = _contextMenu.Items.Add("推迟休息");
             pauseItem.Click += (sender, e) => PauseTimer?.Invoke(this, EventArgs.Empty);
+            
+            var immediateRestItem = _contextMenu.Items.Add("立即休息");
+            immediateRestItem.Click += (sender, e) => ImmediateRest?.Invoke(this, EventArgs.Empty);
             
             _contextMenu.Items.Add(new ToolStripSeparator());
             
