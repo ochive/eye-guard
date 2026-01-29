@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 
 namespace eye_guard.Core
@@ -8,6 +9,7 @@ namespace eye_guard.Core
     public class ScreenController
     {
         private List<Window> _blackoutWindows;
+        private List<TextBlock> _countdownTexts;
         private System.Windows.Forms.Timer _blackoutTimer;
         private const int BLACKOUT_DURATION_SECONDS = 60;
         private int _remainingSeconds;
@@ -20,6 +22,7 @@ namespace eye_guard.Core
         public ScreenController()
         {
             _blackoutWindows = new List<Window>();
+            _countdownTexts = new List<TextBlock>();
             _blackoutTimer = new System.Windows.Forms.Timer();
             _blackoutTimer.Interval = 1000; // 1秒间隔
             _blackoutTimer.Tick += OnBlackoutTimerTick;
@@ -57,6 +60,7 @@ namespace eye_guard.Core
                 window.Close();
             }
             _blackoutWindows.Clear();
+            _countdownTexts.Clear();
             
             IsBlackoutActive = false;
             BlackoutEnded?.Invoke(this, EventArgs.Empty);
@@ -64,6 +68,16 @@ namespace eye_guard.Core
         
         private Window CreateBlackoutWindow(System.Windows.Forms.Screen screen)
         {
+            var textBlock = new TextBlock
+            {
+                Text = $"{_remainingSeconds}",
+                FontSize = 100,
+                Foreground = System.Windows.Media.Brushes.White,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                TextAlignment = TextAlignment.Center
+            };
+            
             var window = new Window
             {
                 WindowStyle = WindowStyle.None,
@@ -73,15 +87,23 @@ namespace eye_guard.Core
                 Left = screen.Bounds.Left,
                 Top = screen.Bounds.Top,
                 Width = screen.Bounds.Width,
-                Height = screen.Bounds.Height
+                Height = screen.Bounds.Height,
+                Content = textBlock
             };
             
+            _countdownTexts.Add(textBlock);
             return window;
         }
         
         private void OnBlackoutTimerTick(object sender, EventArgs e)
         {
             _remainingSeconds--;
+            
+            // 更新所有窗口的倒计时文本
+            foreach (var textBlock in _countdownTexts)
+            {
+                textBlock.Text = $"{_remainingSeconds}";
+            }
             
             if (_remainingSeconds <= 0)
             {
