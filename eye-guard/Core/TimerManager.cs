@@ -7,18 +7,22 @@ namespace eye_guard.Core
     {
         private System.Timers.Timer _timer;
         private int _remainingMinutes;
-        private const int INTERVAL_MINUTES = 30;
+        private int _remainingSeconds;
+        private const int INTERVAL_MINUTES = 1;
+        private const int INTERVAL_SECONDS = INTERVAL_MINUTES * 60;
         
         public event EventHandler TimerElapsed;
+        public event EventHandler TimeUpdated;
         
         public bool IsRunning { get; private set; }
         public int RemainingMinutes => _remainingMinutes;
+        public int RemainingSeconds => _remainingSeconds;
         
         public TimerManager()
         {
-            _timer = new System.Timers.Timer(60000); // 1分钟间隔
+            _timer = new System.Timers.Timer(1000); // 1秒间隔
             _timer.Elapsed += OnTimerElapsed;
-            _remainingMinutes = INTERVAL_MINUTES;
+            Reset();
         }
         
         public void Start()
@@ -43,13 +47,24 @@ namespace eye_guard.Core
         {
             Pause();
             _remainingMinutes = INTERVAL_MINUTES;
+            _remainingSeconds = 0;
         }
         
         private void OnTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            _remainingMinutes--;
+            if (_remainingSeconds > 0)
+            {
+                _remainingSeconds--;
+            }
+            else if (_remainingMinutes > 0)
+            {
+                _remainingMinutes--;
+                _remainingSeconds = 59;
+            }
             
-            if (_remainingMinutes <= 0)
+            TimeUpdated?.Invoke(this, EventArgs.Empty);
+            
+            if (_remainingMinutes <= 0 && _remainingSeconds <= 0)
             {
                 Pause();
                 TimerElapsed?.Invoke(this, EventArgs.Empty);

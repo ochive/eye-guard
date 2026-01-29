@@ -2,3 +2,4 @@
 2.依赖优先使用NuGet包管理器.
 3.涉及win32 API时,优先使用Vanara.PInvoke库,次选P/Invoke调用.
 4.项目采用.editorconfig配置文件,保持代码风格一致.
+5.使用简化MVVM架构,ViewModel负责业务逻辑,View负责UI展示.优先使用双向数据绑定。

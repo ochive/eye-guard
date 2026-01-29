@@ -23,14 +23,13 @@ namespace eye_guard
         private TimerManager _timerManager;
         private ScreenController _screenController;
         private TrayIcon _trayIcon;
-        private DispatcherTimer _uiUpdateTimer;
         
         public MainWindow()
         {
             InitializeComponent();
             InitializeComponents();
             InitializeEventHandlers();
-            InitializeUpdateTimer();
+            AutoStartTimer();
         }
         
         private void InitializeComponents()
@@ -43,38 +42,76 @@ namespace eye_guard
         private void InitializeEventHandlers()
         {
             // 按钮点击事件
-            StartButton.Click += (sender, e) => _timerManager.Start();
-            PauseButton.Click += (sender, e) => _timerManager.Pause();
+            PauseButton.Click += (sender, e) =>
+            {
+                if (_timerManager.IsRunning)
+                {
+                    _timerManager.Pause();
+                    ShowMessage("已暂停计时");
+                }
+                else
+                {
+                    _timerManager.Start();
+                    ShowMessage("已继续计时");
+                }
+            };
             
             // 定时器事件
-            _timerManager.TimerElapsed += (sender, e) => _screenController.StartBlackout();
+            _timerManager.TimerElapsed += (sender, e) =>
+            {
+                // 在UI线程中执行黑屏操作
+                Dispatcher.Invoke(() => _screenController.StartBlackout());
+            };
+            _timerManager.TimeUpdated += (sender, e) =>
+            {
+                // 在UI线程中更新UI
+                Dispatcher.Invoke(() => UpdateUI());
+            };
             
             // 黑屏结束事件
-            _screenController.BlackoutEnded += (sender, e) => _timerManager.Start();
+            _screenController.BlackoutEnded += (sender, e) =>
+            {
+                // 在UI线程中执行定时器启动操作
+                Dispatcher.Invoke(() => _timerManager.Start());
+            };
             
             // 托盘图标事件
             _trayIcon.ShowMainWindow += (sender, e) => ShowWindow();
             _trayIcon.ExitApplication += (sender, e) => System.Windows.Application.Current.Shutdown();
-            _trayIcon.StartTimer += (sender, e) => _timerManager.Start();
-            _trayIcon.PauseTimer += (sender, e) => _timerManager.Pause();
+            _trayIcon.StartTimer += (sender, e) =>
+            {
+                _timerManager.Start();
+                ShowMessage("已开始计时");
+            };
+            _trayIcon.PauseTimer += (sender, e) =>
+            {
+                _timerManager.Pause();
+                ShowMessage("已暂停计时");
+            };
         }
         
-        private void InitializeUpdateTimer()
+        private void AutoStartTimer()
         {
-            _uiUpdateTimer = new DispatcherTimer();
-            _uiUpdateTimer.Interval = TimeSpan.FromSeconds(1);
-            _uiUpdateTimer.Tick += (sender, e) => UpdateUI();
-            _uiUpdateTimer.Start();
+            _timerManager.Start();
+            ShowMessage("护眼软件已启动，开始计时");
         }
         
         private void UpdateUI()
         {
             // 更新剩余时间显示
-            TimeRemainingText.Text = $"{_timerManager.RemainingMinutes}:00";
+            TimeRemainingText.Text = $"{_timerManager.RemainingMinutes:00}:{_timerManager.RemainingSeconds:00}";
+            
+            // 更新暂停按钮文本
+            PauseButton.Content = _timerManager.IsRunning ? "暂停" : "继续";
             
             // 更新托盘图标状态
             string status = _timerManager.IsRunning ? "运行中" : "已暂停";
             _trayIcon.UpdateStatus(status);
+        }
+        
+        private void ShowMessage(string message)
+        {
+            System.Windows.MessageBox.Show(message, "护眼软件", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         
         private void ShowWindow()
@@ -97,7 +134,6 @@ namespace eye_guard
             _timerManager.Dispose();
             _screenController.Dispose();
             _trayIcon.Dispose();
-            _uiUpdateTimer.Stop();
             
             base.OnClosed(e);
         }
