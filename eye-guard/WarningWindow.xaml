@@ -24,7 +24,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         
         <!-- Title Bar -->
@@ -33,27 +32,27 @@
             <Button x:Name="CloseButton" Content="X" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" Foreground="White" BorderThickness="0" Click="CloseButton_Click"/>
         </Grid>
         
-        <!-- Countdown Display -->
+        <!-- Countdown Display with Action Button -->
         <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock x:Name="CountdownText" FontSize="16" Text="离休息还剩余时间: 60秒" HorizontalAlignment="Center"/>
-        </Grid>
-        
-        <!-- Action Buttons -->
-        <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
-                <RadioButton x:Name="ImmediateRestRadio" Content="立即休息(T)" IsChecked="True" Margin="0,0,10,0"/>
-                <RadioButton x:Name="DelayRestRadio" Content="推迟休息(D)" Margin="0,0,5,0"/>
-                <Button x:Name="DelayButton" Content="▼" Width="20" Click="DelayButton_Click"/>
-                <ComboBox x:Name="DelayComboBox" Width="80" Visibility="Collapsed" SelectionChanged="DelayComboBox_SelectionChanged">
-                    <ComboBoxItem Content="3分钟" Tag="3"/>
-                    <ComboBoxItem Content="5分钟" Tag="5"/>
-                    <ComboBoxItem Content="8分钟" Tag="8"/>
-                </ComboBox>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock x:Name="CountdownText" FontSize="16" Text="离休息还剩余时间: 60秒" VerticalAlignment="Center"/>
+                <Button x:Name="ActionButton" Content="操作" Margin="20,0,0,0" Click="ActionButton_Click" VerticalAlignment="Center">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="立即休息(T)" Click="ImmediateRestMenuItem_Click"/>
+                            <MenuItem Header="推迟休息(D)">
+                                <MenuItem Header="3分钟" Click="Delay3MinutesMenuItem_Click"/>
+                                <MenuItem Header="5分钟" Click="Delay5MinutesMenuItem_Click"/>
+                                <MenuItem Header="8分钟" Click="Delay8MinutesMenuItem_Click"/>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
             </StackPanel>
         </Grid>
         
         <!-- Footer -->
-        <Grid Grid.Row="3" Background="#F0F0F0" Height="30">
+        <Grid Grid.Row="2" Background="#F0F0F0" Height="30">
             <TextBlock Text="711健康导航，提供全方位的健康导航服务" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Foreground="#666666"/>
         </Grid>
     </Grid>

@@ -57,30 +57,45 @@ namespace eye_guard
         {
             // Close button should not close the window, just hide it
             // But according to the requirement, we should respect user's choice
-            // For now, we'll just hide the dropdown if it's open
-            if (DelayComboBox.Visibility == Visibility.Visible)
+            // For now, we'll just hide any open context menus
+            if (ActionButton.ContextMenu != null && ActionButton.ContextMenu.IsOpen)
             {
-                DelayComboBox.Visibility = Visibility.Collapsed;
+                ActionButton.ContextMenu.IsOpen = false;
             }
         }
         
-        private void DelayButton_Click(object sender, RoutedEventArgs e)
+        private void ActionButton_Click(object sender, RoutedEventArgs e)
         {
-            // Toggle the visibility of the delay combo box
-            DelayComboBox.Visibility = DelayComboBox.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+            // Show the context menu when action button is clicked
+            ActionButton.ContextMenu.IsOpen = true;
         }
         
-        private void DelayComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void ImmediateRestMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (DelayComboBox.SelectedItem is System.Windows.Controls.ComboBoxItem selectedItem)
-            {
-                if (int.TryParse(selectedItem.Tag.ToString(), out int delayMinutes))
-                {
-                    // Trigger delay rest event
-                    DelayRestRequested?.Invoke(this, delayMinutes);
-                    Close();
-                }
-            }
+            // Trigger immediate rest event
+            ImmediateRestRequested?.Invoke(this, EventArgs.Empty);
+            Close();
+        }
+        
+        private void Delay3MinutesMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            // Trigger delay rest event with 3 minutes
+            DelayRestRequested?.Invoke(this, 3);
+            Close();
+        }
+        
+        private void Delay5MinutesMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            // Trigger delay rest event with 5 minutes
+            DelayRestRequested?.Invoke(this, 5);
+            Close();
+        }
+        
+        private void Delay8MinutesMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            // Trigger delay rest event with 8 minutes
+            DelayRestRequested?.Invoke(this, 8);
+            Close();
         }
         
         private void Window_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
