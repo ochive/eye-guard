@@ -86,7 +86,7 @@ namespace eye_guard
             
             // 托盘图标事件
             _trayIcon.ShowMainWindow += (sender, e) => ShowWindow();
-            _trayIcon.ExitApplication += (sender, e) => System.Windows.Application.Current.Shutdown();
+            _trayIcon.ExitApplication += (sender, e) => ShowExitConfirmationWindow();
             _trayIcon.PauseTimer += (sender, e) =>
             {
                 _timerManager.AddTime(1); // 推迟1分钟
@@ -156,6 +156,80 @@ namespace eye_guard
             this.Show();
             this.WindowState = WindowState.Normal;
             this.Activate();
+        }
+        
+        private void ShowExitConfirmationWindow()
+        {
+            var exitWindow = new ExitConfirmationWindow();
+            exitWindow.ExitConfirmed += (sender, option) => HandleExitOption(option);
+            exitWindow.ShowDialog();
+        }
+        
+        private void HandleExitOption(ExitConfirmationWindow.ExitOption option)
+        {
+            switch (option)
+            {
+                case ExitConfirmationWindow.ExitOption.ExitCompletely:
+                    // 完全关闭退出
+                    System.Windows.Application.Current.Shutdown();
+                    break;
+                case ExitConfirmationWindow.ExitOption.TemporaryExit10Minutes:
+                    // 暂时关闭10分钟
+                    _timerManager.Pause();
+                    ShowMessage("眼睛护士已暂时关闭，10分钟后将自动恢复");
+                    // 10分钟后自动恢复
+                    System.Threading.Tasks.Task.Delay(TimeSpan.FromMinutes(10)).ContinueWith(t =>
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            _timerManager.Start();
+                            ShowMessage("眼睛护士已自动恢复运行");
+                        });
+                    });
+                    break;
+                case ExitConfirmationWindow.ExitOption.TemporaryExit15Minutes:
+                    // 暂时关闭15分钟
+                    _timerManager.Pause();
+                    ShowMessage("眼睛护士已暂时关闭，15分钟后将自动恢复");
+                    // 15分钟后自动恢复
+                    System.Threading.Tasks.Task.Delay(TimeSpan.FromMinutes(15)).ContinueWith(t =>
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            _timerManager.Start();
+                            ShowMessage("眼睛护士已自动恢复运行");
+                        });
+                    });
+                    break;
+                case ExitConfirmationWindow.ExitOption.TemporaryExit20Minutes:
+                    // 暂时关闭20分钟
+                    _timerManager.Pause();
+                    ShowMessage("眼睛护士已暂时关闭，20分钟后将自动恢复");
+                    // 20分钟后自动恢复
+                    System.Threading.Tasks.Task.Delay(TimeSpan.FromMinutes(20)).ContinueWith(t =>
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            _timerManager.Start();
+                            ShowMessage("眼睛护士已自动恢复运行");
+                        });
+                    });
+                    break;
+                case ExitConfirmationWindow.ExitOption.TemporaryExit1Hour:
+                    // 暂时关闭1小时
+                    _timerManager.Pause();
+                    ShowMessage("眼睛护士已暂时关闭，1小时后将自动恢复");
+                    // 1小时后自动恢复
+                    System.Threading.Tasks.Task.Delay(TimeSpan.FromHours(1)).ContinueWith(t =>
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            _timerManager.Start();
+                            ShowMessage("眼睛护士已自动恢复运行");
+                        });
+                    });
+                    break;
+            }
         }
         
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
