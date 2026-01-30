@@ -73,8 +73,8 @@ namespace eye_guard
             };
             _timerManager.TimeWarning += (sender, e) =>
             {
-                // 在UI线程中显示警告信息
-                Dispatcher.Invoke(() => ShowMessage("即将黑屏休息，请注意"));
+                // 在UI线程中显示警告窗口
+                Dispatcher.Invoke(() => ShowWarningWindow());
             };
             
             // 黑屏结束事件
@@ -123,6 +123,32 @@ namespace eye_guard
         private void ShowMessage(string message)
         {
             System.Windows.MessageBox.Show(message, "护眼软件", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        
+        private void ShowWarningWindow()
+        {
+            var warningWindow = new WarningWindow();
+            
+            // 处理立即休息事件
+            warningWindow.ImmediateRestRequested += (sender, e) =>
+            {
+                _screenController.StartBlackout();
+                _timerManager.Reset();
+            };
+            
+            // 处理推迟休息事件
+            warningWindow.DelayRestRequested += (sender, delayMinutes) =>
+            {
+                _timerManager.AddTime(delayMinutes);
+                ShowMessage($"已经将休息时间推迟{delayMinutes}分钟");
+            };
+            
+            // 开始倒计时
+            int remainingWarningSeconds = _timerManager.RemainingWarningSeconds;
+            warningWindow.StartCountdown(remainingWarningSeconds);
+            
+            // 显示窗口
+            warningWindow.Show();
         }
         
         private void ShowWindow()

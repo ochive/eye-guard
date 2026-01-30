@@ -1,0 +1,60 @@
+<Window x:Class="eye_guard.WarningWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="护眼护土休息提示"
+        Width="400"
+        Height="200"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Topmost="True">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Title Bar -->
+        <Grid Grid.Row="0" Background="#0066CC" Height="30">
+            <TextBlock Text="护眼护土休息提示" Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="10,0,0,0" FontWeight="Bold"/>
+            <Button x:Name="CloseButton" Content="X" Width="30" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Background="Transparent" Foreground="White" BorderThickness="0" Click="CloseButton_Click"/>
+        </Grid>
+        
+        <!-- Countdown Display -->
+        <Grid Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock x:Name="CountdownText" FontSize="16" Text="离休息还剩余时间: 60秒" HorizontalAlignment="Center"/>
+        </Grid>
+        
+        <!-- Action Buttons -->
+        <Grid Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+                <RadioButton x:Name="ImmediateRestRadio" Content="立即休息(T)" IsChecked="True" Margin="0,0,10,0"/>
+                <RadioButton x:Name="DelayRestRadio" Content="推迟休息(D)" Margin="0,0,5,0"/>
+                <Button x:Name="DelayButton" Content="▼" Width="20" Click="DelayButton_Click"/>
+                <ComboBox x:Name="DelayComboBox" Width="80" Visibility="Collapsed" SelectionChanged="DelayComboBox_SelectionChanged">
+                    <ComboBoxItem Content="3分钟" Tag="3"/>
+                    <ComboBoxItem Content="5分钟" Tag="5"/>
+                    <ComboBoxItem Content="8分钟" Tag="8"/>
+                </ComboBox>
+            </StackPanel>
+        </Grid>
+        
+        <!-- Footer -->
+        <Grid Grid.Row="3" Background="#F0F0F0" Height="30">
+            <TextBlock Text="711健康导航，提供全方位的健康导航服务" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Foreground="#666666"/>
+        </Grid>
+    </Grid>
+</Window>
