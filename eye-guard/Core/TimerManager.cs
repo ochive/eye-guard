@@ -8,11 +8,12 @@ namespace eye_guard.Core
         private System.Timers.Timer _timer;
         private int _remainingMinutes;
         private int _remainingSeconds;
-        private const int INTERVAL_MINUTES = 30;
+        private const int INTERVAL_MINUTES = 60;
         private const int INTERVAL_SECONDS = INTERVAL_MINUTES * 60;
         
         public event EventHandler TimerElapsed;
         public event EventHandler TimeUpdated;
+        public event EventHandler TimeWarning;
         
         public bool IsRunning { get; private set; }
         public int RemainingMinutes => _remainingMinutes;
@@ -68,8 +69,16 @@ namespace eye_guard.Core
                 _remainingSeconds = 59;
             }
             
+            // 触发时间更新事件
             TimeUpdated?.Invoke(this, EventArgs.Empty);
             
+            // 当剩余时间为1分钟时触发警告事件
+            if (_remainingMinutes == 1 && _remainingSeconds == 0)
+            {
+                TimeWarning?.Invoke(this, EventArgs.Empty);
+            }
+            
+            // 当时间结束时触发计时结束事件
             if (_remainingMinutes <= 0 && _remainingSeconds <= 0)
             {
                 Pause();

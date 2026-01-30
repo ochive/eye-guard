@@ -71,6 +71,11 @@ namespace eye_guard
                 // 在UI线程中更新UI
                 Dispatcher.Invoke(() => UpdateUI());
             };
+            _timerManager.TimeWarning += (sender, e) =>
+            {
+                // 在UI线程中显示警告信息
+                Dispatcher.Invoke(() => ShowMessage("即将黑屏休息，请注意"));
+            };
             
             // 黑屏结束事件
             _screenController.BlackoutEnded += (sender, e) =>
@@ -85,7 +90,7 @@ namespace eye_guard
             _trayIcon.PauseTimer += (sender, e) =>
             {
                 _timerManager.AddTime(1); // 推迟1分钟
-                ShowMessage("已推迟休息1分钟");
+                ShowMessage("已经将休息时间推迟1分钟");
             };
             _trayIcon.ImmediateRest += (sender, e) =>
             {
