@@ -10,6 +10,12 @@
     <UseWPF>true</UseWPF>
 	<!--这个项目同时支持WPF和Windows Forms.可能用于显示系统托盘图标（NotifyIcon）等WinForms特有功能-->
 	<UseWindowsForms>true</UseWindowsForms>
+	<AssemblyName>眼睛卫士</AssemblyName>
+	<ApplicationIcon>assets\favicon.ico</ApplicationIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="assets\favicon.ico" />
+  </ItemGroup>
 
 </Project>
