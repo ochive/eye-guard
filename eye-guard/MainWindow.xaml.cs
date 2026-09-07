@@ -10,10 +10,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using eye_guard.Core;
-using eye_guard.UI;
+using EyeGuard.Core;
+using EyeGuard.UI;
 
-namespace eye_guard
+namespace EyeGuard
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -80,8 +80,7 @@ namespace eye_guard
             // 黑屏结束事件
             _screenController.BlackoutEnded += (sender, e) =>
             {
-                // 在UI线程中执行定时器启动操作
-                Dispatcher.Invoke(() => _timerManager.Start());
+                _timerManager.Start();
             };
             
             // 托盘图标事件

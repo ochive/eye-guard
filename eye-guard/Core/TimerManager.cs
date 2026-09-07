@@ -1,17 +1,15 @@
 using System;
 using System.Timers;
 
-namespace eye_guard.Core
+namespace EyeGuard.Core
 {
     public class TimerManager
     {
         private System.Timers.Timer _timer;
         private int _remainingMinutes;
         private int _remainingSeconds;
-        private const int INTERVAL_MINUTES = 60;
-        private const int INTERVAL_SECONDS = INTERVAL_MINUTES * 60;
-        private const int WARNING_MINUTES = 1;
-        private const int WARNING_SECONDS = WARNING_MINUTES * 60;
+        private const int INTERVAL_SECONDS = AppSettings.IntervalMinutes * 60;
+        private const int WARNING_SECONDS = AppSettings.WarningMinutes * 60;
         
         public event EventHandler TimerElapsed;
         public event EventHandler TimeUpdated;
@@ -51,7 +49,7 @@ namespace eye_guard.Core
         public void Reset()
         {
             Pause();
-            _remainingMinutes = INTERVAL_MINUTES;
+            _remainingMinutes = AppSettings.IntervalMinutes;
             _remainingSeconds = 0;
             IsInWarningPeriod = false;
         }

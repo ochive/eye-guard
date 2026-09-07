@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
-namespace eye_guard.Core
+namespace EyeGuard.Core
 {
     public class ScreenController
     {
         private List<Window> _blackoutWindows;
         private List<TextBlock> _countdownTexts;
-        private System.Windows.Forms.Timer _blackoutTimer;
-        private const int BLACKOUT_DURATION_SECONDS = 60;
+        private DispatcherTimer _blackoutTimer;
         private int _remainingSeconds;
         
         public event EventHandler BlackoutEnded;
@@ -23,8 +23,7 @@ namespace eye_guard.Core
         {
             _blackoutWindows = new List<Window>();
             _countdownTexts = new List<TextBlock>();
-            _blackoutTimer = new System.Windows.Forms.Timer();
-            _blackoutTimer.Interval = 1000; // 1秒间隔
+            _blackoutTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
             _blackoutTimer.Tick += OnBlackoutTimerTick;
         }
         
@@ -34,7 +33,7 @@ namespace eye_guard.Core
                 return;
             
             IsBlackoutActive = true;
-            _remainingSeconds = BLACKOUT_DURATION_SECONDS;
+            _remainingSeconds = AppSettings.BlackoutDurationSeconds;
             
             // 为每个显示器创建黑屏窗口
             foreach (var screen in System.Windows.Forms.Screen.AllScreens)
@@ -113,7 +112,7 @@ namespace eye_guard.Core
         
         public void Dispose()
         {
-            _blackoutTimer?.Dispose();
+            _blackoutTimer?.Stop();
             EndBlackout();
         }
     }
