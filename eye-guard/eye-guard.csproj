@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
-    <RootNamespace>eye_guard</RootNamespace>
+    <RootNamespace>EyeGuard</RootNamespace>
     <Nullable>enable</Nullable>
 	<!--自动为常用命名空间添加全局using-->
 	<ImplicitUsings>enable</ImplicitUsings>

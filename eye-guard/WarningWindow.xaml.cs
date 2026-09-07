@@ -2,7 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace eye_guard
+namespace EyeGuard
 {
     public partial class WarningWindow : Window
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 
-namespace eye_guard.UI
+namespace EyeGuard.UI
 {
     public class TrayIcon : IDisposable
     {

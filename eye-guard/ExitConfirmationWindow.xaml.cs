@@ -1,7 +1,7 @@
 using System;
 using System.Windows;
 
-namespace eye_guard
+namespace EyeGuard
 {
     public partial class ExitConfirmationWindow : Window
     {

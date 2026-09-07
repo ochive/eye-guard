@@ -2,7 +2,7 @@ using System.Configuration;
 using System.Data;
 using System.Windows;
 
-namespace eye_guard
+namespace EyeGuard
 {
     /// <summary>
     /// Interaction logic for App.xaml
