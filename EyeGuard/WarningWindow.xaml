@@ -53,7 +53,7 @@
         
         <!-- Footer -->
         <Grid Grid.Row="2" Background="#F0F0F0" Height="30">
-            <TextBlock Text="711健康导航，提供全方位的健康导航服务" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Foreground="#666666"/>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" Foreground="#666666"><Run Language="zh-cn" Text="955"/><Run Text="健康"/><Run Language="zh-cn" Text="生活"/><Run Text="，"/><Run Language="zh-cn" Text="幸福快乐每一天"/></TextBlock>
         </Grid>
     </Grid>
 </Window>
